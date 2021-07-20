@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Project3_Travel_Optimization",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Project3_Travel_Optimization::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Project3_Travel_Optimization-Debug-cdeba31f3070971cff27.json",
+					"name" : "Project3_Travel_Optimization",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/maxlo/Documents/CODE/COP3530/Project3_Travel_Optimization/out/build/x64-Debug (default)",
+		"source" : "C:/Users/maxlo/Documents/CODE/COP3530/Project3_Travel_Optimization"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}
