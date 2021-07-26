@@ -20,7 +20,7 @@ FlightGraph* FileManager::buildGraph(string fileName) {
 
     vector<string> row;
     string line, temp, data;
-    //getline(fin, line);
+    cout << "Loading Flight Data..." << endl;
     while (fin >> temp)
     {
         row.clear();
@@ -40,6 +40,6 @@ FlightGraph* FileManager::buildGraph(string fileName) {
         e.price = stod(row[13]);
         fgraph->insertFlightEdge(e);
     }
-
+    cout << "Flight Data loaded successfully!" << endl;
     return fgraph;
 }

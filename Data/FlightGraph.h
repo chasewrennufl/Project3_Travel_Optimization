@@ -18,6 +18,8 @@ private:
     map<short, vector<FlightEdge>> graph;
     int V;
     int E;
+    map<string, short> WAC;
+    map<string, string> airlines;
 
 public:
 
@@ -31,7 +33,8 @@ public:
     void printGraph();
 
     string getAirline(string code);
-    string getDest(short AC);
+    string getLocFromAC(short AC);
+    short getACfromLoc(string loc);
 
 };
 
