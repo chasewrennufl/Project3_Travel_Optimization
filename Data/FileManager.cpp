@@ -6,7 +6,7 @@
 #include <sstream>
 #include "FileManager.h"
 
-FlightGraph* FileManager::buildGraph(string fileName) {
+FlightGraph* FileManager::buildGraph(string fileName, short q,  map<string, bool> airlines) {
     FlightGraph* fgraph = new FlightGraph();
     fstream fin;
 
@@ -21,10 +21,10 @@ FlightGraph* FileManager::buildGraph(string fileName) {
     vector<string> row;
     string line, temp, data;
     cout << "Loading Flight Data..." << endl;
-    while (fin >> temp)
+    fin >> temp;
+    while (fin >> line)
     {
         row.clear();
-        fin >> line;
         stringstream s(line);
 
         while (getline(s, data, ','))
@@ -38,7 +38,9 @@ FlightGraph* FileManager::buildGraph(string fileName) {
         e.destWAC = stoi(row[8]);
         e.airlineCode = row[12];
         e.price = stod(row[13]);
-        fgraph->insertFlightEdge(e);
+        if (e.quarter == q && airlines.find(e.airlineCode) != airlines.end()) {
+            fgraph->insertFlightEdge(e);
+        }
     }
     cout << "Flight Data loaded successfully!" << endl;
     return fgraph;

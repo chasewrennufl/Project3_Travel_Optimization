@@ -7,13 +7,6 @@
 #include "FlightGraph.h"
 
 FlightGraph::FlightGraph() {
-    /*WAC.insert(make_pair("Alaska", 1));
-    WAC.insert(make_pair("Hawaii", 2));
-    WAC.insert(make_pair("Puerto Rico", 3));
-    WAC.insert(make_pair("U.S. Virgin Islands", 4));
-    WAC.insert(make_pair("U.S. Pacific Trust Territories and Possessions", 5));
-    WAC.insert(make_pair("Connecticut", 11 ));
-    WAC.insert(make_pair("Maine", 12)); */
 
     string string1 = "1 Alaska\n"
                      "2 Hawaii\n"
@@ -102,9 +95,6 @@ FlightGraph::FlightGraph() {
     }
 }
 
-FlightGraph::FlightGraph(int V) {
-
-}
 
 void FlightGraph::insertFlightEdge(FlightEdge &e)
 {

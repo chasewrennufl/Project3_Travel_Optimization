@@ -18,13 +18,11 @@ private:
     map<short, vector<FlightEdge>> graph;
     int V;
     int E;
-    map<string, short> WAC;
-    map<string, string> airlines;
+
 
 public:
 
     FlightGraph();
-    FlightGraph(int V);
 
     void insertFlightEdge(FlightEdge& e);
     bool isFlight(FlightEdge& e);
@@ -35,6 +33,9 @@ public:
     string getAirline(string code);
     string getLocFromAC(short AC);
     short getACfromLoc(string loc);
+
+    map<string, short> WAC;
+    map<string, string> airlines;
 
 };
 
