@@ -8,6 +8,7 @@
 #include <string>
 #include "FlightEdge.h"
 #include <map>
+#include <vector>
 
 using namespace std;
 

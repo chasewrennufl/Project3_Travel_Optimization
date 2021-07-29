@@ -130,7 +130,7 @@ void FlightGraph::printGraph() {
 }
 
 string FlightGraph::getAirline(string code) {
-
+    return ""; //placeholder
 }
 
 string FlightGraph::getLocFromAC(short AC) {
