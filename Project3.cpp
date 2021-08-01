@@ -330,14 +330,13 @@ void computePressed(tgui::GuiBase* gui, string* startPointPointer, set<string>* 
     computeDjikstra();
     computeBellmanFord();
     *outputPointer = "test2 line 1 \ntest2 line 2"; //for testing, remove once you actually compute the output
-    createOutput(*gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer, outputPointer);
+    createOutput(*gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer, outputPointer); //prints output. Do this after storing the output in *outputPointer, don't change this method
 
-    //clear all data
+    //clear all data 
     *startPointPointer = "";
     destinationsPointer->clear();
     *airLinePointer = "";
     *quarterPointer = "";
-    //cout << "hi";
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
