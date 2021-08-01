@@ -14,7 +14,7 @@ private:
 
 public:
 
-    FlightGraph* buildGraph(string fileName, short q, map<string, bool> airlines);
+    void buildGraph(string fileName, short q, map<string, bool> airlines, FlightGraph& fgraph);
 
 };
 

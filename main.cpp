@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 	FileManager f;
-	FlightGraph* flightGraph;
+	FlightGraph flightGraph;
 	bool incomplete = true;
 	short q;
 	string src;
@@ -113,6 +113,10 @@ int main() {
         dest.insert(make_pair(stoi(substr), true));
     }
 	//flightGraph = f.buildGraph("Cleaned_2018_Flights.csv");
-	flightGraph = f.buildGraph("Test Flight Data.csv", q, airlines);
+	f.buildGraph("Test Flight Data.csv", q, airlines, flightGraph); 
     cout << "For testing" << endl;
+
+    flightGraph.printGraph();
+
+    //when clicked
 }

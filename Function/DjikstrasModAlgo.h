@@ -4,10 +4,17 @@
 
 #ifndef PROJECT3_TRAVEL_OPTIMIZATION_DJIKSTRASMODALGO_H
 #define PROJECT3_TRAVEL_OPTIMIZATION_DJIKSTRASMODALGO_H
+#include <vector>
+//#include "FlightGraph.h" - need to rearrange paths
 
 
 class DjikstrasModAlgo {
 
+public:
+
+	//DjikstrasModAlgo();
+
+	//void findShortestPaths(FlightGraph& graph, )
 };
 
 

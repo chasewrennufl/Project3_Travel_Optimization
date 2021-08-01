@@ -113,6 +113,8 @@ void FlightGraph::insertFlightEdge(FlightEdge &e)
 }
 
 bool FlightGraph::isFlight(FlightEdge &e) {
+    //Search in flightgraph if there exists in 
+    // flight x = graph[e.originWAC]
     return false;
 }
 
@@ -126,7 +128,12 @@ vector<FlightEdge> FlightGraph::getFlightsFromLoc(string src) {
 }
 
 void FlightGraph::printGraph() {
-
+    cout << "List of All Flights in Graph:" << endl;
+    for (auto it = graph.begin(); it != graph.end(); ++it)
+    {
+        for (int i = 0; i < it->second.size(); i++)
+            cout << it->second.at(i).originWAC << "->" << it->second.at(i).destWAC << endl; //can add here more stuff w/ edges i.e. show Airport Name or Price
+    }
 }
 
 string FlightGraph::getAirline(string code) {
