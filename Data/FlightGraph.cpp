@@ -93,6 +93,9 @@ FlightGraph::FlightGraph() {
         string name = line2.substr(index+1, line2.size());
         airlines.insert(make_pair(code, name));
     }
+
+    V = 0;
+    E = 0;
 }
 
 
@@ -122,7 +125,7 @@ double FlightGraph::getPrice(string src, string dest) {
     return 0;
 }
 
-vector<FlightEdge> FlightGraph::getFlightsFromLoc(string src) {
+vector<FlightEdge> FlightGraph::getFlightsFromLoc(short src) {
     vector<FlightEdge> flights;
     return flights;
 }
@@ -136,8 +139,17 @@ void FlightGraph::printGraph() {
     }
 }
 
-string FlightGraph::getAirline(string code) {
-    return ""; //placeholder
+string FlightGraph::getAirlineFromData(short src, short dest, double price) {
+    string airline = "";
+    bool found = false;
+    for (int i = 0; i < graph[src].size() && !found; i++) {
+        FlightEdge e = graph[src].at(i);
+        if (e.originWAC = src && e.destWAC == dest && e.price == price) {
+            airline = e.airlineCode;
+            found = true;
+        }
+    }
+    return airline;
 }
 
 string FlightGraph::getLocFromAC(short AC) {
@@ -154,4 +166,8 @@ string FlightGraph::getLocFromAC(short AC) {
 
 short FlightGraph::getACfromLoc(string loc) {
     return WAC.find(loc)->second;
+}
+
+string FlightGraph::getAirlineFromCode(string code) {
+    return airlines[code];
 }

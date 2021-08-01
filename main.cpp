@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include "Data/FileManager.h"
+#include "Function/BellmanFordAlgo.h"
+#include <chrono>
 
 using namespace std;
 
@@ -10,7 +12,7 @@ int main() {
 	bool incomplete = true;
 	short q;
 	string src;
-	map<short, bool> dest;
+	vector<short> dest;
 	map<string, bool> airlines;
 	cout << "Welcome to Travel Optimization BETA!" << endl;
 	while (incomplete) {
@@ -110,13 +112,23 @@ int main() {
     while (ss2.good()) {
         string substr;
         getline(ss2, substr, ',');
-        dest.insert(make_pair(stoi(substr), true));
+        dest.push_back(stoi(substr));
     }
 	//flightGraph = f.buildGraph("Cleaned_2018_Flights.csv");
-	f.buildGraph("Test Flight Data.csv", q, airlines, flightGraph); 
-    cout << "For testing" << endl;
-
-    flightGraph.printGraph();
-
+    auto start = std::chrono::high_resolution_clock::now();
+	f.buildGraph("Test Flight Data.csv", q, airlines, flightGraph);
+    BellmanFordAlgo bellmanFordAlgo;
+    vector<FlightEdge> route;
+    route = bellmanFordAlgo.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+    cout << "Bellman Ford Algorithm Time: " << duration.count() << " microseconds" << endl;
+    for (int i = 0; i < route.size(); i++) {
+        FlightEdge e = route.at(i);
+        cout << flightGraph.getLocFromAC(e.originWAC) << "--->" <<
+            flightGraph.getLocFromAC(e.destWAC) << "; Price: $" << e.price << "; Airline: " <<
+            flightGraph.getAirlineFromCode(e.airlineCode) << endl;
+    }
+    cout <<"Route Complete!";
     //when clicked
 }

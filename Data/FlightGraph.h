@@ -12,26 +12,25 @@
 
 using namespace std;
 
-class FlightGraph
+struct FlightGraph
 {
-private:
+public:
 
     map<short, vector<FlightEdge>> graph;
+
     int V;
     int E;
-
-
-public:
 
     FlightGraph();
 
     void insertFlightEdge(FlightEdge& e);
     bool isFlight(FlightEdge& e);
     double getPrice(string src, string dest);
-    vector<FlightEdge> getFlightsFromLoc(string src);
+    vector<FlightEdge> getFlightsFromLoc(short src);
     void printGraph();
 
-    string getAirline(string code);
+    string getAirlineFromCode(string code);
+    string getAirlineFromData(short src, short dest, double price);
     string getLocFromAC(short AC);
     short getACfromLoc(string loc);
 

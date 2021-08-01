@@ -44,6 +44,7 @@ void FileManager::buildGraph(string fileName, short q,  map<string, bool> airlin
        
         if (e.quarter == q && airlines.find(e.airlineCode) != airlines.end()) { //Would like to change this to keep lowest price per quarter/airline/origin/dest combo
             fgraph.insertFlightEdge(e);
+
         }
         
     }
