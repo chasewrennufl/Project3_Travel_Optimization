@@ -239,7 +239,7 @@ void createInput(tgui::GuiBase& gui, string* startPointPointer, set<string>* des
     gui.add(listBox1);
 }
 
-void createOutput(tgui::GuiBase& gui, string* startPointPointer, set<string>* destinationsPointer, string* airLinePointer, string* quarterPointer)
+void createOutput(tgui::GuiBase& gui, string* startPointPointer, set<string>* destinationsPointer, string* airLinePointer, string* quarterPointer, string* outputPointer)
 {
     //Create input window
 
@@ -254,7 +254,7 @@ void createOutput(tgui::GuiBase& gui, string* startPointPointer, set<string>* de
     listBox2->setSize(250, 250);
     listBox2->setPosition(650, 350);
     listBox2->setItemHeight(25);
-
+    listBox2->addItem(*outputPointer);
 
     gui.add(listBox2);
 }
@@ -325,30 +325,33 @@ void quarterPressed(tgui::GuiBase* gui, string* startPointPointer, set<string>* 
     //cout << *quarterPointer;
 }
 
-void computePressed(tgui::GuiBase* gui, string* startPointPointer, set<string>* destinationsPointer, string* airLinePointer, string* quarterPointer)
+void computePressed(tgui::GuiBase* gui, string* startPointPointer, set<string>* destinationsPointer, string* airLinePointer, string* quarterPointer, string* outputPointer)
 {
     computeDjikstra();
     computeBellmanFord();
+    *outputPointer = "test2 line 1 \ntest2 line 2"; //for testing, remove once you actually compute the output
+    createOutput(*gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer, outputPointer);
+
+    //clear all data
     *startPointPointer = "";
     destinationsPointer->clear();
     *airLinePointer = "";
     *quarterPointer = "";
-    //createInput(*gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer);
-    cout << "hi";
+    //cout << "hi";
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 
 bool runCode(tgui::GuiBase& gui, vector <tgui::Button::Ptr>& startingPointButtons, vector <tgui::Button::Ptr>& destinationButtons, vector <tgui::Button::Ptr>& airlineButtons, vector <tgui::Button::Ptr>& quarterButtons,
-    tgui::Button::Ptr& computeButton, map<string, string>& airlineData, map <string, int>& locationData, string* startPointPointer, set<string>* destinationsPointer, string* airLinePointer, string* quarterPointer)
+    tgui::Button::Ptr& computeButton, map<string, string>& airlineData, map <string, int>& locationData, string* startPointPointer, set<string>* destinationsPointer, string* airLinePointer, string* quarterPointer, string* outputPointer)
 {
 
     try
     {
         loadWidgets(gui, startingPointButtons, destinationButtons, airlineButtons, quarterButtons, computeButton, airlineData, locationData, startPointPointer, destinationsPointer, airLinePointer, quarterPointer);
         createInput(gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer);
-        createOutput(gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer);
+        createOutput(gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer, outputPointer);
         for (int i = 0; i < startingPointButtons.size(); i++)
         {
             startingPointButtons[i]->onPress(&startingPointPressed, &gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer);
@@ -365,7 +368,7 @@ bool runCode(tgui::GuiBase& gui, vector <tgui::Button::Ptr>& startingPointButton
         {
             quarterButtons[i]->onPress(&quarterPressed, &gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer);
         }
-        computeButton->onPress(&computePressed, &gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer);
+        computeButton->onPress(&computePressed, &gui, startPointPointer, destinationsPointer, airLinePointer, quarterPointer, outputPointer);
         //cout << startingPoints.size();
         return true;
     }
@@ -400,6 +403,9 @@ int main()
     string* quarterPointer = &quarter;
     int quarterFinal;
 
+    string output = "test line 1 \ntest line 2";
+    string* outputPointer = &output; 
+
     bool redrawInputOutput;
     bool* redrawInputOutputPointer = &redrawInputOutput;
 
@@ -410,7 +416,7 @@ int main()
 
     tgui::Gui gui(window);
 
-    if (!runCode(gui, startingPointButtons, destinationButtons, airlineButtons, quarterButtons, computeButton, airlineData, locationData, startPointPointer, destinationsPointer, airLinePointer, quarterPointer))
+    if (!runCode(gui, startingPointButtons, destinationButtons, airlineButtons, quarterButtons, computeButton, airlineData, locationData, startPointPointer, destinationsPointer, airLinePointer, quarterPointer, outputPointer))
         return EXIT_FAILURE;
 
     //while (window.isOpen())
