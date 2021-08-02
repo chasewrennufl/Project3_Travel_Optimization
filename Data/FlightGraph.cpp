@@ -121,8 +121,18 @@ bool FlightGraph::isFlight(FlightEdge &e) {
     return false;
 }
 
+bool FlightGraph::isFlight(short src, short dest)
+{
+    for (int i = 0; i < graph[src].size(); i++)
+    {
+        if (graph[src].at(i).originWAC = src && graph[src].at(i).destWAC == dest)
+            return true;
+    }
+    return false;
+}
+
 double FlightGraph::getPrice(string src, string dest) {
-    return 0;
+    return 0.0;
 }
 
 vector<FlightEdge> FlightGraph::getFlightsFromLoc(short src) {
@@ -150,6 +160,20 @@ string FlightGraph::getAirlineFromData(short src, short dest, double price) {
         }
     }
     return airline;
+}
+
+double FlightGraph::getWeight(short src, short dest)
+{
+    double lowestWeight = DBL_MAX;
+    for (int i = 0; i < graph[src].size(); i++)
+    {
+        if (graph[src].at(i).destWAC = dest)
+        {
+            if (graph[src].at(i).price < lowestWeight)
+                lowestWeight = graph[src].at(i).price;
+        }
+    }
+    return lowestWeight;
 }
 
 string FlightGraph::getLocFromAC(short AC) {

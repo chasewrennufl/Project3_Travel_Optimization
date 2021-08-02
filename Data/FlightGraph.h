@@ -25,12 +25,14 @@ public:
 
     void insertFlightEdge(FlightEdge& e);
     bool isFlight(FlightEdge& e);
+    bool isFlight(short src, short dest);
     double getPrice(string src, string dest);
     vector<FlightEdge> getFlightsFromLoc(short src);
     void printGraph();
 
     string getAirlineFromCode(string code);
     string getAirlineFromData(short src, short dest, double price);
+    double getWeight(short src, short dest);
     string getLocFromAC(short AC);
     short getACfromLoc(string loc);
 

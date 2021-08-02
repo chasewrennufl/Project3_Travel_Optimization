@@ -2,22 +2,23 @@
 #include <sstream>
 #include "Data/FileManager.h"
 #include "Function/BellmanFordAlgo.h"
+#include "Function/DjikstrasModAlgo.h"
 #include <chrono>
 
 using namespace std;
 
 int main() {
 	FileManager f;
-	FlightGraph flightGraph;
+    FlightGraph flightGraph;
 	bool incomplete = true;
 	short q;
 	string src;
 	vector<short> dest;
 	map<string, bool> airlines;
-	cout << "Welcome to Travel Optimization BETA!" << endl;
+    cout << "Welcome to Travel Optimization BETA!" << endl;
 	while (incomplete) {
         cout << "Please enter the quarter of the year "
-                "you would like to take your trip:" << endl;
+            "you would like to take your trip:" << endl;
         cin >> q;
         if (q < 0 || q > 4) {
             cout << "Error! Quarter must be between 1 and 4!" << endl;
@@ -29,7 +30,7 @@ int main() {
     cout << "Please enter the source of the trip:" << endl;
     cin >> src;
     cout << "Enter Airline codes of airlines you would like to use,"
-         " separated by a comma. (Ex: WN,DL):" << endl;
+        " separated by a comma. (Ex: WN,DL):" << endl;
     cout << "WN Southwest Airlines Co.\n"
             "DL Delta Air Lines Inc.\n"
             "AA American Airlines Inc.\n"
@@ -118,11 +119,21 @@ int main() {
     auto start = std::chrono::high_resolution_clock::now();
 	f.buildGraph("Test Flight Data.csv", q, airlines, flightGraph);
     BellmanFordAlgo bellmanFordAlgo;
-    vector<FlightEdge> route;
-    route = bellmanFordAlgo.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
+    DjikstrasModAlgo djikstra;
+    vector<FlightEdge> route, route2;
+    //route = bellmanFordAlgo.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
+    route = djikstra.findShortestPaths(flightGraph, flightGraph.WAC[src], dest);
+
     auto stop = std::chrono::high_resolution_clock::now();
-    auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-    cout << "Bellman Ford Algorithm Time: " << duration.count() << " microseconds" << endl;
+    auto duration = chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    
+    //auto start2 = std::chrono::high_resolution_clock::now();
+    //route2 = bellmanFordAlgo.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
+    //auto stop2 = std::chrono::high_resolution_clock::now();
+    //auto duration2 = chrono::duration_cast<std::chrono::microseconds>(stop2 - start2);
+
+    //cout << "Bellman Ford Algorithm Time: " << duration2.count() << " microseconds" << endl;
+    cout << "Dijstra Algorithm Time: " << duration.count() << " microseconds" << endl;
     for (int i = 0; i < route.size(); i++) {
         FlightEdge e = route.at(i);
         cout << flightGraph.getLocFromAC(e.originWAC) << "--->" <<
