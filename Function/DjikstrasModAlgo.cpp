@@ -99,7 +99,7 @@ short DjikstrasModAlgo::minDistance(FlightGraph* g, map<short, bool> reached) {
 
     // Initialize min value
     double min = DBL_MAX;
-    short closest;
+    short closest = 0;
 
     for (auto itr = reached.begin(); itr != reached.end(); itr++)
         if (!itr->second && d[itr->first] <= min)

@@ -17,7 +17,7 @@ private:
 
     vector<FlightEdge> route;
 
-    double DBL_MAX = std::numeric_limits<double>::max();
+    //double DBL_MAX = std::numeric_limits<double>::max();
 
     short minDistance(FlightGraph* g, map<short, bool> reached);
 
