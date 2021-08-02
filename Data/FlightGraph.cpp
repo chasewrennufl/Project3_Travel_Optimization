@@ -197,6 +197,16 @@ string FlightGraph::getAirlineFromCode(string code) {
     return airlines[code];
 }
 
+string FlightGraph::getCodeFromAirline(string airline)
+{
+    for (auto it = airlines.begin(); it != airlines.end(); ++it)
+    {
+        if (it->second == airline)
+            return it->first;
+    }
+    return "";
+}
+
 string FlightGraph::routeText(vector<FlightEdge> route) {
     string res;
     for (int i = 0; i < route.size(); i++) {

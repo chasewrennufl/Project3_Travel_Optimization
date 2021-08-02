@@ -28,6 +28,7 @@ public:
     bool isFlight(short src, short dest);
     double getPrice(string src, string dest);
     vector<FlightEdge> getFlightsFromLoc(short src);
+    string getCodeFromAirline(string airline);
     void printGraph();
 
     string getAirlineFromCode(string code);
