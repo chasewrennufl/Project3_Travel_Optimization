@@ -289,12 +289,12 @@ string compute(string* startPointPointer, set<string>* destinationsPointer, stri
 	vector<FlightEdge> route, route2;
 
 	auto start = std::chrono::high_resolution_clock::now();
-	route = djikstra.findShortestPaths(flightGraph, flightGraph.WAC[src], dest);
+	route = djikstra.findShortestPaths(flightGraph, src, dest);
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
 	auto start2 = std::chrono::high_resolution_clock::now();
-	route2 = bellmanFordAlgo.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
+	route2 = bellmanFordAlgo.calculateRoute(&flightGraph, src, dest);
 	auto stop2 = std::chrono::high_resolution_clock::now();
 	auto duration2 = chrono::duration_cast<std::chrono::microseconds>(stop2 - start2);
 
