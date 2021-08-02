@@ -140,7 +140,7 @@ int main() {
     cout << "Djikstra Output:" << endl;
     string out2 = flightGraph.routeText(route);
     cout << out2 << endl;
-    cout << "Dijkstra Algorithm Time: " << duration.count() << " microseconds" << endl;
+    cout << "Dijkstra Algorithm Time: " << duration.count() << " microseconds" << endl;//
    /* for (int i = 0; i < route.size(); i++) {
         FlightEdge e = route.at(i);
         cout << flightGraph.getLocFromAC(e.originWAC) << "--->" <<
