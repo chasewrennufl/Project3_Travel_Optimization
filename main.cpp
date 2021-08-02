@@ -134,12 +134,14 @@ int main() {
 
     //cout << "Bellman Ford Algorithm Time: " << duration2.count() << " microseconds" << endl;
     cout << "Dijstra Algorithm Time: " << duration.count() << " microseconds" << endl;
-    for (int i = 0; i < route.size(); i++) {
+   /* for (int i = 0; i < route.size(); i++) {
         FlightEdge e = route.at(i);
         cout << flightGraph.getLocFromAC(e.originWAC) << "--->" <<
             flightGraph.getLocFromAC(e.destWAC) << "; Price: $" << e.price << "; Airline: " <<
             flightGraph.getAirlineFromCode(e.airlineCode) << endl;
-    }
-    cout <<"Route Complete!";
+    } */
+   string out = flightGraph.routeText(route);
+   cout << out << endl;
+   cout <<"Route Complete!";
     //when clicked
 }

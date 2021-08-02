@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include "FlightGraph.h"
+#include "iomanip"
 
 FlightGraph::FlightGraph() {
 
@@ -194,4 +195,17 @@ short FlightGraph::getACfromLoc(string loc) {
 
 string FlightGraph::getAirlineFromCode(string code) {
     return airlines[code];
+}
+
+string FlightGraph::routeText(vector<FlightEdge> route) {
+    string res;
+    for (int i = 0; i < route.size(); i++) {
+        FlightEdge e = route.at(i);
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(2) << e.price;
+         res += getLocFromAC(e.originWAC) + "--->" +
+             getLocFromAC(e.destWAC) + "; Price: $" + stream.str() + "; Airline: " +
+             getAirlineFromCode(e.airlineCode) + "\n";
+    }
+    return res;
 }

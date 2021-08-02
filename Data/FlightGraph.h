@@ -35,6 +35,7 @@ public:
     double getWeight(short src, short dest);
     string getLocFromAC(short AC);
     short getACfromLoc(string loc);
+    string routeText(vector<FlightEdge> route);
 
     map<string, short> WAC;
     map<string, string> airlines;
