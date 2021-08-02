@@ -115,33 +115,38 @@ int main() {
         getline(ss2, substr, ',');
         dest.push_back(stoi(substr));
     }
-	//flightGraph = f.buildGraph("Cleaned_2018_Flights.csv");
-    auto start = std::chrono::high_resolution_clock::now();
-	f.buildGraph("Test Flight Data.csv", q, airlines, flightGraph);
+	f.buildGraph("Cleaned_2018_Flights.csv", q, airlines, flightGraph);
+	//f.buildGraph("Test Flight Data.csv", q, airlines, flightGraph);
     BellmanFordAlgo bellmanFordAlgo;
     DjikstrasModAlgo djikstra;
     vector<FlightEdge> route, route2;
     //route = bellmanFordAlgo.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
-    route = djikstra.findShortestPaths(flightGraph, flightGraph.WAC[src], dest);
 
+    auto start2 = std::chrono::high_resolution_clock::now();
+    route2 = bellmanFordAlgo.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
+    auto stop2 = std::chrono::high_resolution_clock::now();
+    auto duration2 = chrono::duration_cast<std::chrono::microseconds>(stop2 - start2);
+
+    auto start = std::chrono::high_resolution_clock::now();
+    route = djikstra.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<std::chrono::microseconds>(stop - start);
-    
-    //auto start2 = std::chrono::high_resolution_clock::now();
-    //route2 = bellmanFordAlgo.calculateRoute(&flightGraph, flightGraph.WAC[src], dest);
-    //auto stop2 = std::chrono::high_resolution_clock::now();
-    //auto duration2 = chrono::duration_cast<std::chrono::microseconds>(stop2 - start2);
 
-    //cout << "Bellman Ford Algorithm Time: " << duration2.count() << " microseconds" << endl;
-    cout << "Dijstra Algorithm Time: " << duration.count() << " microseconds" << endl;
+    cout << "Bellman Ford Output:" << endl;
+    string out = flightGraph.routeText(route2);
+    cout << out << endl;
+    cout << "Bellman Ford Algorithm Time: " << duration2.count() << " microseconds" << endl;
+    cout << "---------------------------------------------------------------------------------" << endl;
+    cout << "Djikstra Output:" << endl;
+    string out2 = flightGraph.routeText(route);
+    cout << out2 << endl;
+    cout << "Dijkstra Algorithm Time: " << duration.count() << " microseconds" << endl;
    /* for (int i = 0; i < route.size(); i++) {
         FlightEdge e = route.at(i);
         cout << flightGraph.getLocFromAC(e.originWAC) << "--->" <<
             flightGraph.getLocFromAC(e.destWAC) << "; Price: $" << e.price << "; Airline: " <<
             flightGraph.getAirlineFromCode(e.airlineCode) << endl;
     } */
-   string out = flightGraph.routeText(route);
-   cout << out << endl;
-   cout <<"Route Complete!";
+
     //when clicked
 }

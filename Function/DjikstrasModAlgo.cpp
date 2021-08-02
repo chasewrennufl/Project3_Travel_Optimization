@@ -4,139 +4,106 @@
 
 #include "DjikstrasModAlgo.h"
 
-short getIndex(vector<short>& v, short K) //source - https://www.geeksforgeeks.org/how-to-find-index-of-a-given-element-in-a-vector-in-cpp/
-{
-	auto it = find(v.begin(), v.end(), K);
 
-	// If element was found
-	if (it != v.end())
-	{
+void DjikstrasModAlgo::djikstra(FlightGraph* g, short source) {
+    map<short, bool> reached;
 
-		// calculating the index
-		// of K
-		short index = it - v.begin();
-		return index;
-	}
-	else {
-		// If the element is not
-		// present in the vector
-		return -1;
-	}
+    for (auto itr = g->graph.begin(); itr != g->graph.end(); itr++) {
+        d[itr->first] = DBL_MAX;
+        p[itr->first] = 0;
+        reached[itr->first] = false;
+    }
+    d[source] = 0;
+
+    bool allReached = false;
+    while (!allReached) {
+        short u = minDistance(g, reached);
+        reached[u] = true;
+        vector<FlightEdge> cur = g->graph[u];
+        for (int i = 0; i < cur.size(); i++) {
+            double temp = d[u] + cur.at(i).price;
+            if (temp < d[cur.at(i).destWAC]) {
+                d[cur.at(i).destWAC] = temp;
+                p[cur.at(i).destWAC] = u;
+            }
+        }
+        allReached = true;
+        for (auto itr = reached.begin(); itr != reached.end() && allReached; itr++) {
+            allReached = itr->second;
+        }
+    }
 }
 
-bool alreadyChecked(vector<short>& destsChecked, short x)
-{
-	for (auto it = destsChecked.begin(); it != destsChecked.end(); ++it)
-	{
-		if (*it == x)
-			return true;
-	}
-	return false;
+vector<FlightEdge> DjikstrasModAlgo::calculateRoute(FlightGraph *g, short source, vector<short> dest) {
+    map<short, bool> reached; //tracks reached destinations
+    short src = source; //tracks current source
+    vector<FlightEdge> result; //resulting vector in order
+    //for each destination, map pair created with bool false to show location has not been reached
+    for (int i = 0; i < dest.size(); i++) {
+        reached.insert(make_pair(dest.at(i), false));
+    }
+    bool fin = false; //tracks if all dest have been reached
+    while (!fin) {
+        fin = true; //set to true;
+        double min = DBL_MAX;
+        short end = 0;
+        djikstra(g, src); //finds paths to all nodes
+        for (auto itr = d.begin(); itr != d.end(); itr++) {
+            auto destSet = reached.find(itr->first);
+            if (destSet != reached.end()) {
+                if (itr->second < min &&  !destSet->second) { //sets destination to minimum remaining destination
+                    min = itr->second;
+                    end = itr->first;
+                }
+            }
+        }
+        vector<FlightEdge> cur = getCurrentPath(g, src, end, reached); //backtracks through d and p maps to create path
+        //WORKS TO HERE
+        for (int i = cur.size()-1; i >= 0; i--) { //go through backtrack backwards for correct order
+            result.push_back(cur.at(i));
+        }
+        for (auto itr = reached.begin(); itr != reached.end() && fin; itr++) { //check all dest have been reached
+            fin = itr->second;
+        }
+        src = result.at(result.size()-1).destWAC;
+    }
+    short finalDest = result.at(result.size()-1).destWAC;
+    map<short, bool> hold;
+    hold.insert(make_pair(source, false));
+    djikstra(g, finalDest);
+    vector<FlightEdge> returnPath = getCurrentPath(g, finalDest, source, hold); //return back to original source
+    for (int i = returnPath.size()-1; i >= 0; i--) {
+        result.push_back(returnPath.at(i));
+    }
+    return result; //return total path
 }
 
-vector<FlightEdge> getPath(FlightGraph& graph, short origin, short dest, map<short, short>& p, map<short, double>& d)
-{
-	short cur = dest;
-	vector<FlightEdge> path;
-	while (cur != origin) {
-		short last = p[cur];
-		FlightEdge edge;
-		edge.price = d[cur] - d[last];
-		edge.destWAC = cur;
-		edge.originWAC = last;
-		edge.airlineCode = graph.getAirlineFromData(edge.originWAC, edge.destWAC, edge.price);
-		path.push_back(edge);
-		cur = last;
-	}
-	return path;
+vector<FlightEdge> DjikstrasModAlgo::getCurrentPath(FlightGraph *g, short src, short dest, map<short, bool> &reached) {
+    short cur = dest;
+    vector<FlightEdge> path;
+    while (cur != src) {
+        reached[cur] = true;
+        short last = p[cur];
+        FlightEdge edge;
+        edge.price = d[cur] - d[last];
+        edge.destWAC = cur;
+        edge.originWAC = last;
+        edge.airlineCode = g->getAirlineFromData(edge.originWAC,edge.destWAC, edge.price);
+        path.push_back(edge);
+        cur = last;
+    }
+    return path;
 }
 
-//Will return a vector of all pairs, with the indices matching the indicies of dests. First is distance, second is path
-map<short, pair<double, vector<FlightEdge>>> djikstraRun(FlightGraph& graph, short origin, vector<short> dests)
-{
-	short s = origin;
-	vector<short> ss = { origin };
-	vector<short> vs;
-	map<short, short> p; //first is wac, second is previous
-	map<short, double> d; //first is wac, second is price/distance
-	map<short, pair<double, vector<FlightEdge>>> returnMap;
-	for (auto it = graph.graph.begin(); it != graph.graph.end(); ++it)
-	{
-		if (it->first != s)
-		{
-			vs.push_back(it->first);
-		}
-	}
-	for (short v : vs)
-	{
-		p[v] = s;
-		if (graph.isFlight(s, v))
-			d[v] = graph.getWeight(s, v);
-		else
-			d[v] = DBL_MAX;
-		//cout << d[v] << endl;
+short DjikstrasModAlgo::minDistance(FlightGraph* g, map<short, bool> reached) {
 
-	}
-	while (!vs.empty())
-	{
-		int smallestShort = 0;
-		double smallestDouble = DBL_MAX;
-		for (int i = 0; i < vs.size(); i++)
-		{
-			if (d[vs.at(i)] < smallestDouble)
-				//cout << d[vs.at(i)];
-				smallestShort = i;
-		}
-		short u = vs.at(smallestShort);
-		ss.push_back(vs.at(smallestShort));
-		vs.erase(vs.begin() + smallestShort);
-		for (int i = 0; i < graph.graph.at(ss.at(ss.size() - 1)).size(); i++)
-		{
-			if (d[u] + graph.graph.at(ss.at(ss.size() - 1)).at(i).price < d[graph.graph.at(ss.at(ss.size() - 1)).at(i).destWAC])
-			{
-				d[graph.graph.at(ss.at(ss.size() - 1)).at(i).destWAC] = d[u] + graph.graph.at(ss.at(ss.size() - 1)).at(i).price;
-				p[graph.graph.at(ss.at(ss.size() - 1)).at(i).destWAC] = u;
-			}
-		}
-	}
-	for (int i = 0; i < dests.size(); i++) //Here would be the error checking to make sure if dests in graph
-	{
-		returnMap[dests.at(i)] = make_pair(d[dests.at(i)], getPath(graph, origin, dests.at(i), p, d));
-	}
+    // Initialize min value
+    double min = DBL_MAX;
+    short closest;
 
-	return returnMap;
-}
+    for (auto itr = reached.begin(); itr != reached.end(); itr++)
+        if (!itr->second && d[itr->first] <= min)
+            min = d[itr->first], closest = itr->first;
 
-vector<FlightEdge> DjikstrasModAlgo::findShortestPaths(FlightGraph& graph, short origin, vector<short> dests)
-{
-	vector<short> destsChecked;
-	destsChecked.push_back(origin);
-	map<short, pair<double, vector<FlightEdge>>> tempDists;
-	vector<FlightEdge> returnVector;
-	while (!dests.empty())
-	{
-		tempDists = djikstraRun(graph, destsChecked.at(destsChecked.size() - 1), dests);;
-		short lowestIndex = 0;
-		double lowestDist = DBL_MAX;
-		//for (int i = 0; i < tempDists.size(); i++)
-		for (auto it = tempDists.begin(); it != tempDists.end(); ++it)
-		{
-			if (it->second.first < lowestDist)
-				lowestIndex = it->first;
-		}
-		destsChecked.push_back(lowestIndex);
-		int x = getIndex(dests, lowestIndex);
-		dests.erase(dests.begin() + x);
-		for (int i = 0; i < tempDists[lowestIndex].second.size(); i++)
-		{
-			returnVector.push_back(tempDists[lowestIndex].second.at(i));
-		}
-	}
-	//run once more for way back
-	tempDists = djikstraRun(graph, destsChecked.at(destsChecked.size() - 1), { origin });
-	for (int i = 0; i < tempDists[origin].second.size(); i++)
-	{
-		returnVector.push_back(tempDists[origin].second.at(i));
-	}
-	return returnVector;
+    return closest;
 }

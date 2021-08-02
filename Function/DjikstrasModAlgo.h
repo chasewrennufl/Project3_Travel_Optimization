@@ -10,13 +10,26 @@
 
 
 class DjikstrasModAlgo {
+private:
+    map<short, double> d;
+
+    map<short, short> p;
+
+    vector<FlightEdge> route;
+
+    double DBL_MAX = std::numeric_limits<double>::max();
+
+    short minDistance(FlightGraph* g, map<short, bool> reached);
+
 
 public:
 
-	//DjikstrasModAlgo();
+    void djikstra(FlightGraph* g, short source);
 
-	//void findShortestPaths(FlightGraph& graph, )
-	vector<FlightEdge> findShortestPaths(FlightGraph& graph, short origin, vector<short> dests);
+    vector<FlightEdge> calculateRoute(FlightGraph *g, short source, vector<short> dest);
+
+    vector<FlightEdge> getCurrentPath(FlightGraph *g, short src, short dest, map<short, bool>& reached);
+
 };
 
 

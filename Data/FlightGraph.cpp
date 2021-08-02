@@ -126,7 +126,7 @@ bool FlightGraph::isFlight(short src, short dest)
 {
     for (int i = 0; i < graph[src].size(); i++)
     {
-        if (graph[src].at(i).originWAC = src && graph[src].at(i).destWAC == dest)
+        if (graph[src].at(i).originWAC == src && graph[src].at(i).destWAC == dest)
             return true;
     }
     return false;
@@ -155,7 +155,7 @@ string FlightGraph::getAirlineFromData(short src, short dest, double price) {
     bool found = false;
     for (int i = 0; i < graph[src].size() && !found; i++) {
         FlightEdge e = graph[src].at(i);
-        if (e.originWAC = src && e.destWAC == dest && e.price == price) {
+        if (e.originWAC == src && e.destWAC == dest && e.price == price) {
             airline = e.airlineCode;
             found = true;
         }
@@ -165,7 +165,7 @@ string FlightGraph::getAirlineFromData(short src, short dest, double price) {
 
 double FlightGraph::getWeight(short src, short dest)
 {
-    double lowestWeight = DBL_MAX;
+    double lowestWeight = std::numeric_limits<double>::max();
     for (int i = 0; i < graph[src].size(); i++)
     {
         if (graph[src].at(i).destWAC = dest)

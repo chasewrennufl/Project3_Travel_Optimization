@@ -15,7 +15,7 @@ private:
 
     vector<FlightEdge> route;
 
-    //kjdouble DBL_MAX = std::numeric_limits<double>::max();
+    double DBL_MAX = std::numeric_limits<double>::max();
 
 public:
 
