@@ -24,7 +24,7 @@ void FileManager::buildGraph(string fileName, short q,  map<string, bool> airlin
     string line, temp, data;
     cout << "Loading Flight Data..." << endl;
     fin >> temp;  //need this to remove header line
-    
+    bool pastQ = false;
     while (fin >> line)
     {
         row.clear();
@@ -46,7 +46,9 @@ void FileManager::buildGraph(string fileName, short q,  map<string, bool> airlin
             fgraph.insertFlightEdge(e);
 
         }
-        
+        else if (e.quarter > q) {
+            pastQ = true;
+        }
     }
     cout << "Flight Data loaded successfully!" << endl;
     //return fgraph; Not necessary now
